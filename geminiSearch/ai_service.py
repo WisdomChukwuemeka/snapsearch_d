@@ -61,12 +61,12 @@ def _get_vision_client():
     """
     from google.cloud import vision as gcloud_vision
 
-    creds_path = getattr(settings, "GOOGLE_APPLICATION_CREDENTIALS", None) \
-                 or os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
+    creds_path = getattr(settings, "GVS_CREDENTIALS", None) \
+                 or os.environ.get("GVS_CREDENTIALS")
 
     if creds_path:
         from google.oauth2 import service_account
-        credentials = service_account.Credentials.from_service_account_file(
+        credentials = service_account.Credentials.from_service_account_info(
             creds_path,
             scopes=["https://www.googleapis.com/auth/cloud-platform"],
         )

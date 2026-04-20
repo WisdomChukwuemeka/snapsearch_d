@@ -169,3 +169,16 @@ EBAY_APP_ID           = os.getenv("EBAY_APP_ID")
 EBAY_CAMPAIGN_ID      = os.getenv("EBAY_CAMPAIGN_ID")
 GEMINI_API_KEY        = os.getenv("GEMINI_API_KEY")
 PREFERRED_AI_PROVIDER = os.getenv("PREFERRED_AI_PROVIDER", "gemini")
+
+
+
+GVS_CREDENTIALS = {
+    "type": os.getenv("SCP_TYPE", "service_account"),
+    "project_id": os.getenv("SCP_PROJECT_ID"),
+    "private_key_id": os.getenv("SCP_PRIVATE_KEY_ID"),
+    # Replace literal \n with real newlines — .env files flatten them
+    "private_key": os.getenv("SCP_PRIVATE_KEY", "").replace("\\n", "\n"),
+    "client_email": os.getenv("SCP_CLIENT_EMAIL"),
+    "client_id": os.getenv("SCP_CLIENT_ID"),
+    "token_uri": os.getenv("SCP_TOKEN_URI", "https://oauth2.googleapis.com/token"),
+}
