@@ -176,9 +176,11 @@ GVS_CREDENTIALS = {
     "type": os.getenv("SCP_TYPE", "service_account"),
     "project_id": os.getenv("SCP_PROJECT_ID"),
     "private_key_id": os.getenv("SCP_PRIVATE_KEY_ID"),
-    # Replace literal \n with real newlines — .env files flatten them
     "private_key": os.getenv("SCP_PRIVATE_KEY", "").replace("\\n", "\n"),
     "client_email": os.getenv("SCP_CLIENT_EMAIL"),
     "client_id": os.getenv("SCP_CLIENT_ID"),
     "token_uri": os.getenv("SCP_TOKEN_URI", "https://oauth2.googleapis.com/token"),
+    "auth_uri": os.getenv("SCP_AUTH_URI", "https://accounts.google.com/o/oauth2/auth"),
+    "auth_provider_x509_cert_url": os.getenv("SCP_AUTH_PROVIDER_CERT_URL", "https://www.googleapis.com/oauth2/v1/certs"),
+    "client_x509_cert_url": os.getenv("SCP_CLIENT_CERT_URL", ""),
 }

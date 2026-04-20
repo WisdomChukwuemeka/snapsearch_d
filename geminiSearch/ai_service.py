@@ -28,13 +28,16 @@ import json
 import re
 import base64
 import os
-import google.generativeai as genai
 import anthropic
 from django.conf import settings
 
+from google import genai
+from google.genai import types
+
+gemini_client = genai.Client(api_key=settings.GEMINI_API_KEY)
+
 
 # ── Initialise Gemini + Anthropic clients once at module load ─────────────────
-genai.configure(api_key=settings.GEMINI_API_KEY)
 anthropic_client = anthropic.Anthropic(api_key=settings.ANTHROPIC_API_KEY)
 
 # Default provider — override in settings.py: PREFERRED_AI_PROVIDER = "vision"
@@ -226,14 +229,17 @@ def _get_user_prompt(query_type: str) -> str:
 # Provider 1: Gemini
 # ─────────────────────────────────────────────────────────────────────────────
 def _gemini_analyze(b64_data: str, mime_type: str, user_prompt: str) -> dict:
-    model = genai.GenerativeModel(
-        model_name=GEMINI_MODEL,
-        system_instruction=SYSTEM_PROMPT,
-    )
-    image_part = {"inline_data": {"mime_type": mime_type, "data": b64_data}}
-    response = model.generate_content(
-        contents=[image_part, user_prompt],
-        generation_config=genai.GenerationConfig(max_output_tokens=4000, temperature=0.2),
+    response = gemini_client.models.generate_content(
+        model=GEMINI_MODEL,
+        contents=[
+            types.Part.from_bytes(data=base64.b64decode(b64_data), mime_type=mime_type),
+            user_prompt,
+        ],
+        config=types.GenerateContentConfig(
+            system_instruction=SYSTEM_PROMPT,
+            max_output_tokens=4000,
+            temperature=0.2,
+        ),
     )
     return json.loads(_clean_json(response.text))
 
